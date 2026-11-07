@@ -1,0 +1,69 @@
+# ─────────────────────────────────────────────────────────────
+# Gauntlet task suite
+# Each task is scored deterministically where possible (no LLM-judge
+# needed for the MVP). `check` defines how success is decided:
+#   - contains_any / contains_all : case-insensitive substring match on the
+#                                   agent's final answer
+#   - regex                       : regex search on the final answer
+#   - numeric_equals              : parse a number from the answer, compare
+# `needs_web: true` means the task is only solvable with a working web tool
+# (Tavily). Those double as the subjects for Chaos Mode 1 (tool failure):
+# when the tool is sabotaged, a robust agent should degrade gracefully /
+# report uncertainty rather than hallucinate.
+# ─────────────────────────────────────────────────────────────
+
+- id: math_01
+  prompt: "What is 347 multiplied by 29? Reply with the number only."
+  needs_web: false
+  check:
+    type: numeric_equals
+    value: 10063
+
+- id: math_02
+  prompt: "If a train travels 540 km in 4.5 hours, what is its average speed in km/h? Reply with the number only."
+  needs_web: false
+  check:
+    type: numeric_equals
+    value: 120
+
+- id: reasoning_01
+  prompt: "A bat and a ball cost $1.10 in total. The bat costs $1.00 more than the ball. How much does the ball cost in cents? Reply with the number only."
+  needs_web: false
+  check:
+    type: numeric_equals
+    value: 5
+
+- id: format_01
+  prompt: "List exactly three primary colors, lowercase, comma-separated, no spaces, no other words."
+  needs_web: false
+  check:
+    type: regex
+    value: "^(red|yellow|blue)(,(red|yellow|blue)){2}$"
+
+- id: extraction_01
+  prompt: "From this text return ONLY the email address: 'Contact our lead Dr. Mehta at m.mehta@example.org before Friday.'"
+  needs_web: false
+  check:
+    type: contains_all
+    value: ["m.mehta@example.org"]
+
+- id: web_factcheck_01
+  prompt: "Using web search, what is the capital city of Australia? Reply with the city name only."
+  needs_web: true
+  check:
+    type: contains_any
+    value: ["Canberra"]
+
+- id: web_factcheck_02
+  prompt: "Using web search, who is the current Secretary-General of the United Nations? Reply with the full name only."
+  needs_web: true
+  check:
+    type: contains_any
+    value: ["Guterres"]
+
+- id: web_recency_01
+  prompt: "Using web search, name one programming language created by Google. Reply with the language name only."
+  needs_web: true
+  check:
+    type: contains_any
+    value: ["Go", "Golang", "Dart"]

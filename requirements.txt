@@ -1,0 +1,24 @@
+# Gauntlet — agent benchmarking harness
+# Python 3.11+ required. Bifrost gateway runs separately via: npx -y @maximhq/bifrost
+
+# --- LLM / gateway client (OpenAI-compatible; points at Bifrost base URL) ---
+openai==3.46.0
+
+# --- Tavily web tools (search/extract) used inside benchmarked agents ---
+tavily-python==0.8.5
+
+# --- HTTP + config ---
+httpx==0.28.1
+python-dotenv==1.2.4
+pyyaml==6.0.3
+
+# --- CLI output ---
+rich==15.0.0
+
+# --- Dashboard ---
+streamlit==1.67.0
+pandas==3.1.1
+
+# --- Second agent subject (LangChain ReAct). Installed when that agent is built. ---
+# langchain
+# langchain-openai

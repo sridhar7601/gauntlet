@@ -1,0 +1,26 @@
+# Secrets — NEVER commit
+.env
+*.key
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# Bifrost local data (config.db, logs.db, config.json with keys)
+bifrost-data/
+config.db
+logs.db
+
+# Benchmark run outputs (regenerated; keep repo light)
+results/*.json
+results/*.sqlite
+results/runs/
+!results/.gitkeep
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
